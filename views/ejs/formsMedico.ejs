@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Formulário Médico</title>
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2 class="text-center">Cadastro de Medicos</h2>
+    <form action="cadastrar-medico" method="POST">
+        <div class="form-group">
+            <label for="inputNomeMedico">Nome do Médico</label>
+            <input type="text" name="NomeMedico" class="form-control" id="inputNomeMedico" placeholder="Digite o nome do médico" required>
+        </div>
+        <div class="form-group">
+            <label for="inputEspecialidade">Especialidade</label>
+            <select class="form-control" id="inputEspecialidade" name="EspecialidadeID" required>
+                <% especialidades.forEach((especialidade) => { %>
+                    <option value="<%= especialidade.ID %>"><%= especialidade.NomeEspecialidade%></option>
+                <% }); %>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Enviar</button>
+    </form>
+    <h2 class="text-center">Médicos Cadastrados</h2>
+    <% medicos.forEach((medico) => { %>
+        <form action="alterar-medico" method="POST">
+            <!-- ID da especialidade que fica escondido -->
+            <input readonly value="<%= medico.ID %>" type="text" class="form-control d-none" id="id" name="id">
+
+            <div class="form-group">
+                <label for="inputNome">Nome</label>
+                <input type="text" class="form-control" id="inputNome" placeholder="Digite o nome" name="NomeMedico" value="<%= medico.NomeMedico %>" required>
+            </div>
+
+            <div class="form-group">
+                <label for="inputEspecialidade">Especialidade</label>
+                <select class="form-control" id="inputEspecialidade" name="EspecialidadeID" required>
+                    <% especialidades.forEach((especialidade) => { %>
+                        <% if (medico.EspecialidadeID == especialidade.ID) { %>
+                            <option selected="selected" value="<%= especialidade.ID %>"><%= especialidade.NomeEspecialidade %></option>
+                        <% } else { %>
+                            <option value="<%= especialidade.ID %>"><%= especialidade.NomeEspecialidade %></option>
+                        <% } %>
+                    <% }); %>
+                    
+                </select>
+            </div>
+            <button type="submit" class="btn btn-secondary" name="acao" value="alterar">Alterar</button>
+            <button type="submit" class="btn btn-danger" name="acao" value="excluir">Excluir</button>
+       </form>
+    <% }); %>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

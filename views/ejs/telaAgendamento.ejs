@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Tela de Agendamento</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center">Agendamento de Consulta Médica</h2>
+        <form action="criar-agendamento" method="post">
+            <div class="form-group">
+                <label for="inputDataConsulta">Data da Consulta</label>
+                <input name="DataConsulta" type="date" class="form-control" id="inputDataConsulta" required>
+            </div>
+            <div class="form-group">
+                <label for="inputHoraConsulta">Hora da Consulta</label>
+                <input name="HoraConsulta" type="time" class="form-control" id="inputHoraConsulta" required>
+            </div>
+            <div class="form-group">
+                <label for="inputMedico">Médico</label>
+                <select name="MedicoID" class="form-control" id="inputMedico" required>
+                    <% medicos.forEach(function(medico) { %>
+                        <option value="<%= medico.ID     %>">
+                            <%= medico.NomeMedico %>
+                        </option>
+                        <% }); %>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="inputPaciente">Paciente</label>
+                <select name="PacienteID" class="form-control" id="inputPaciente" required>
+                    <% pacientes.forEach(function(paciente) { %>
+                        <option value="<%= paciente.ID   %>">
+                            <%= paciente.NomePaciente %>
+                        </option>
+                        <% }); %>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="inputTipoConsulta">Tipo de Consulta</label>
+                <select name="TipoConsultaID" class="form-control" id="inputTipoConsulta" required>
+                    <% tipos.forEach(function(tipo) { %>
+                        <option value="<%= tipo.ID   %>">
+                            <%= tipo.NomeTipoConsulta %>
+                        </option>
+                        <% }); %>
+                </select>
+            </div>
+            <!-- Adicione isso ao seu formulário -->
+            <div class="form-group">
+                 <label for="inputDestinatarioEmail">E-mail para Confirmação</label>
+                    <input name="DestinatarioEmail" type="email" class="form-control" id="inputDestinatarioEmail" required>
+            </div>
+  
+            <div class="form-group">
+                <label for="inputStatusConsulta">Status da Consulta</label>
+                <select name="StatusConsultaID" class="form-control" id="inputStatusConsulta" required>
+                    <% status.forEach(function(s) { %>
+                        <option value="<%= s.ID  %>">
+                            <%= s.NomeStatusConsulta %>
+                        </option>
+                        <% }); %>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Agendar Consulta</button>
+        </form>
+        <h2>Agendamentos existentes</h2>
+        <% agendamentos.forEach((agendamento)=> { %>
+            <hr />
+            <form action="alterar-agendamento" method="POST">
+                <input readonly value="<%= agendamento.ID %>" type="text" class="form-control d-none" id="id" name="id">
+
+                <div class="form-group">
+                    <label for="inputDataConsulta">Data da Consulta</label>
+                    <input name="DataConsulta" type="date" class="form-control" id="inputDataConsulta"
+                        value="<%= agendamento.DataConsulta %>" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputHoraConsulta">Hora da Consulta</label>
+                    <input name="HoraConsulta" type="time" class="form-control" id="inputHoraConsulta"
+                        value="<%= (agendamento.HoraConsulta.getHours() + 3).toString().padStart(2, '0') + ':' + agendamento.HoraConsulta.getMinutes().toString().padStart(2, '0') %>"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputMedico">Médico</label>
+                    <select name="MedicoID" class="form-control" id="inputMedico" required>
+                        <% medicos.forEach(function(medico) { %>
+                            <option value="<%= medico.ID %>" <% if (agendamento.MedicoID===medico.ID) { %>selected<% }
+                                    %>>
+                                    <%= medico.NomeMedico %>
+                            </option>
+                            <% }); %>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="inputPaciente">Paciente</label>
+                    <select name="PacienteID" class="form-control" id="inputPaciente" required>
+                        <% pacientes.forEach(function(paciente) { %>
+                            <option value="<%= paciente.ID %>" <% if (agendamento.PacienteID===paciente.ID) { %>selected
+                                <% } %>>
+                                    <%= paciente.NomePaciente %>
+                            </option>
+                            <% }); %>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="inputTipoConsulta">Tipo de Consulta</label>
+                    <select name="TipoConsultaID" class="form-control" id="inputTipoConsulta" required>
+                        <% tipos.forEach(function(tipo) { %>
+                            <option value="<%= tipo.ID %>" <% if (agendamento.TipoConsultaID===tipo.ID) { %>selected<% }
+                                    %>>
+                                    <%= tipo.NomeTipoConsulta %>
+                            </option>
+                            <% }); %>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="inputStatusConsulta">Status da Consulta</label>
+                    <select name="StatusConsultaID" class="form-control" id="inputStatusConsulta" required>
+                        <% status.forEach(function(s) { %>
+                            <option value="<%= s.ID %>" <% if (agendamento.StatusConsultaID===s.ID) { %>selected<% } %>>
+                                    <%= s.NomeStatusConsulta %>
+                            </option>
+                            <% }); %>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-secondary" name="acao" value="alterar">Alterar</button>
+                <button type="submit" class="btn btn-danger" name="acao" value="excluir">Excluir</button>
+            </form>
+            <% }); %>
+    </div>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

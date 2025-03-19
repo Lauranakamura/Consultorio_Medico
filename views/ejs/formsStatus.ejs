@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Cadastro de Status de Consulta</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center">Cadastro de Status de Consulta</h2>
+        <form action="criar-status" method="POST">
+            <div class="form-group">
+                <label for="inputNomeStatusConsulta">Status de Consulta</label>
+                <input type="text" class="form-control" id="inputNomeStatus" placeholder="Digite o nome" name="status"
+                required>
+            </div>
+            <button type="submit" class="btn btn-primary">Cadastrar</button>
+        </form>
+
+        <h2 class="text-center">Alteração de Status</h2>
+        <% status.forEach(function(status) { %>
+            <form action="alterar-status" method="POST">
+                <!-- ID do Status que fica escondido -->
+                <input readonly value="<%= status.ID %>" type="text" class="form-control d-none" id="id" name="id">
+
+                <div class="form-group">
+                    <label for="inputNomeStatus">Nome do Status</label>
+                    <input type="text" class="form-control" id="inputNomeStatus" placeholder="Digite o nome" name="status" value="<%= status.NomeStatusConsulta %>" required>
+                </div>
+    
+                <button type="submit" class="btn btn-secondary" name="acao" value="alterar">Alterar</button>
+                <button type="submit" class="btn btn-danger" name="acao" value="excluir">Excluir</button>
+           </form>
+        <% }); %>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>
